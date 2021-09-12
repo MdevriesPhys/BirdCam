@@ -45,9 +45,9 @@ with picamera.PiCamera() as picam:
     #picam.capture(buffer,format='jpeg')
     time.sleep(2)
     with picamera.array.PiRGBArray(picam) as stream_obj:
-        picam.start_preview(stream_obj,format='bgr')
+        picam.capture(stream_obj,format='bgr')
         camera = stream_obj.array
-        picam.stop_preview()
+        print("here")
 
 classNames= []
 classFile = 'coco.names'
