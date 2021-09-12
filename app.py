@@ -10,6 +10,7 @@ import io
 class StreamingOutput(object):
     def __init__(self):
         self.frame = None
+        self.buffer = io.BytesIO()
 
 def gen_frames():
     while True:
