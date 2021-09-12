@@ -23,7 +23,7 @@ time.sleep(2.0)
 #render html stuff
 @app.route("/")
 def index():
-    return render_template("page.html")
+    return render_template("~/Birdcam/page.html")
 
 def detect_bird():
     #grab global variables
