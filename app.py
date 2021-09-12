@@ -4,31 +4,58 @@ import picamera as picamera
 
 def gen_frames():
     while True:
-        success, frame = camera.read()  #read in a camera frame
+        global net, classNames
+
+        success, img = camera.read()  #read in a camera frame
+        classIDs, confs, bboxes = net.detect(img, confThreshold=thres)
+        if len(classIDs) > 0:  # did we detect anything?
+            # loop to get out results, draw box around it, label it
+            for classID, confidence, box in zip(classIDs.flatten(), confs.flatten(), bboxes):
+                if classNames[classID-1] == 'bird':  # we only want to see birds
+                    colourConfidence = confidence  # (confidence - confidenceThreshold / confidence)  # use this to create a scale for colouring with confidence intervals?
+                    cv2.rectangle(img, box, color=(0, 255 * colourConfidence, 255 * (1 - colourConfidence)),thickness=2)
+                    cv2.putText(img, classNames[classID-1].upper(), (box[0] + 10, box[1] + 30),cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255 * colourConfidence, 255 * (1 - colourConfidence)),thickness=2)
+                    cv2.putText(img, str(round(confidence * 100, 0)) + "%", (box[0] + 10, box[1] + 50),cv2.FONT_HERSHEY_COMPLEX, 1,(0, 255 * colourConfidence, 255 * (1 - colourConfidence)), thickness=2)
+                else:
+                    continue
+
         if not success:
             break
         else:
-            ret, buffer = cv2.imencode('.jpg',frame)
-            frame=buffer.tobytes()
-            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
-#define template route
-@app.route('/')
-def index():
-    return render_template('page.html')
-
-#define route for video feed
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-
+            ret, buffer = cv2.imencode('.jpg',img)
+            img=buffer.tobytes()
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')  # concat frame one by one and show result
 
 #init flask
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
 camera = picamera.PiCamera(resolution='640x480', framerate=24)
+
+classNames= []
+classFile = 'coco.names'
+with open(classFile,'rt') as f:
+    classNames = f.read().rstrip('\n').split('\n')
+
+configPath = 'ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
+weightsPath = 'frozen_inference_graph.pb'
+
+net = cv2.dnn_DetectionModel(weightsPath,configPath)
+net.setInputSize(320,320)
+net.setInputScale(1.0/ 127.5)
+net.setInputMean((127.5, 127.5, 127.5))
+net.setInputSwapRB(True)
+thres=0.5
+
+#define template route
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+#define route for video feed
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 if __name__ == "__main__":
     app.run(debug=True)
