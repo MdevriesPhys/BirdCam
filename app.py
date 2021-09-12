@@ -48,7 +48,6 @@ app =Flask(__name__)
 #camera = cv2.VideoCapture(0)
 #buffer=io.BytesIO
 
-        print("here")
 
 
 classNames= []
