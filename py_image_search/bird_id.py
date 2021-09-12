@@ -29,13 +29,12 @@ class BirdID:
         net.setInputScale(1.0 / 127.5)
         net.setInputMean((127.5, 127.5, 127.5))
         net.setInputSwapRB(True)
+        return(net)
 
-
-    def detect(self,img):
+    def detect(self,img,net):
         #While loop to send image/cam to model, get ClassID (from classNames), confidences, bounding box params (A,B,C,D)
         #while True:
         #success,img = cam.read()
-        global net
         classIDs, confs, boundingboxes = net.detect(img,confThreshold=confidenceThreshold)
         #print(classIDs,(confs))
 
