@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import picamera
 import picamera.array
+import io
 
 class StreamingOutput(object):
     def __init__(self):
