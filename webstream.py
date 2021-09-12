@@ -59,8 +59,7 @@ def generate():
 def video_feed():
 	# return the response generated along with the specific media
 	# type (mime type)
-	return Response(generate(),
-		mimetype = "multipart/x-mixed-replace; boundary=frame")
+	return Response(generate(),mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 # check to see if this is the main thread of execution
 if __name__ == '__main__':
@@ -71,7 +70,7 @@ if __name__ == '__main__':
 	ap.add_argument("-o", "--port", type=int, required=True,
 		help="ephemeral port number of the server (1024 to 65535)",default=8000)
 	args = vars(ap.parse_args())
-	# start a thread that will perform motion detection
+	# start a thread that will perform bird detection
 	t = threading.Thread(target=detect_bird)
 	t.daemon = True
 	t.start()
