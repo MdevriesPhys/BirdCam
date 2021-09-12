@@ -42,10 +42,10 @@ buffer=io.BytesIO
 with picamera.PiCamera() as picam:
     picam.rotation=180
     #picam.start_recording(buffer, format='mjpeg')
-    picam.capture(buffer,format='jpeg')
+    #picam.capture(buffer,format='jpeg')
     time.sleep(2)
-    #with picamera.array.PiRGBArray(picam) as stream_obj:
-        #picam.capture(stream_obj,format='bgr')
+    with picamera.array.PiRGBArray(picam) as stream_obj:
+        picam.capture(stream_obj,format='bgr')
         #buffer = stream_obj.array
         #picam.stop_recording()
 
