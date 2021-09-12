@@ -48,6 +48,7 @@ with picamera.PiCamera() as picam:
         picam.capture(stream_obj,format='bgr')
         camera = stream_obj.array
         picam.stop_capture()
+        break
 
 classNames= []
 classFile = 'coco.names'
