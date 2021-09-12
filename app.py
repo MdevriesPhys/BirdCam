@@ -3,8 +3,8 @@ import time
 from flask import Flask, render_template, Response
 import cv2
 import numpy as np
-#import picamera
-#import picamera.array
+import picamera
+import picamera.array
 
 def gen_frames():
     while True:
