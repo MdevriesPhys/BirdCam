@@ -31,6 +31,26 @@ class BirdID:
         net.setInputSwapRB(True)
 
     def detect(self,img):
+        # initial settings
+        confidenceThreshold = 0.3
+        nms = True
+        nms_threshold = 0.8  # lower value is more suppression
+        # Read coco.names into the list, strip, clean etc
+        classNames = []
+        classFile = 'coco.names'
+        with open(classFile, 'rt') as f:
+            classNames = f.read().rstrip('\n').split('\n')
+
+        # Import config file and weights
+        configPath = 'ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
+        weightsPath = 'frozen_inference_graph.pb'
+
+        # create model, with paramters
+        net = cv2.dnn_DetectionModel(weightsPath, configPath)
+        net.setInputSize(320, 320)
+        net.setInputScale(1.0 / 127.5)
+        net.setInputMean((127.5, 127.5, 127.5))
+        net.setInputSwapRB(True)
         #While loop to send image/cam to model, get ClassID (from classNames), confidences, bounding box params (A,B,C,D)
         #while True:
         #success,img = cam.read()
