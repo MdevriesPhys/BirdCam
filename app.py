@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
+from imutils.video import VideoStream
 import picamera as picamera
 
 def gen_frames():
@@ -29,8 +30,8 @@ def gen_frames():
 #init flask
 app =Flask(__name__)
 #init camera, for rpi use picamera command
-camera = cv2.VideoCapture(0)
-#camera = picamera.PiCamera(resolution='640x480', framerate=24)
+#camera = cv2.VideoCapture(0)
+camera = VideoStream(usePiCamera-args['picamera']>0).start())
 
 classNames= []
 classFile = 'coco.names'
