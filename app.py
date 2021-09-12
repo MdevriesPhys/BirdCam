@@ -29,8 +29,8 @@ def gen_frames():
 #init flask
 app =Flask(__name__)
 #init camera, for rpi use picamera command
-#camera = cv2.VideoCapture(0)
-camera = picamera.PiCamera(resolution='640x480', framerate=24)
+camera = cv2.VideoCapture(0)
+#camera = picamera.PiCamera(resolution='640x480', framerate=24)
 
 classNames= []
 classFile = 'coco.names'
