@@ -18,7 +18,7 @@ def gen_frames():
             picam.rotation = 180
             # picam.start_recording(buffer, format='mjpeg')
             # picam.capture(buffer,format='jpeg')
-            time.sleep(2)
+            time.sleep(0.1)
             with picamera.array.PiRGBArray(picam) as stream_obj:
                 picam.capture(stream_obj, format='bgr')
                 camera = stream_obj.array
