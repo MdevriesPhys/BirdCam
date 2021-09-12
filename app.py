@@ -6,6 +6,22 @@ import numpy as np
 import picamera
 import picamera.array
 
+class StreamingOutput(object):
+    def __init__(self):
+        self.frame = None
+        self.buffer = io.BytesIO()
+        self.condition = Condition()
+
+    def write(self, buf):
+        if buf.startswith(b'\xff\xd8'):
+            # New frame, copy the existing buffer's content and notify all clients it's available
+            self.buffer.truncate()
+            with self.condition:
+                self.frame = self.buffer.getvalue()
+                self.condition.notify_all()
+            self.buffer.seek(0)
+        return self.buffer.write(buf)
+
 def gen_frames():
     while True:
         global net, classNames
@@ -38,12 +54,14 @@ app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
 with picamera.PiCamera() as picam:
+    output = StreamingOutput()
     picam.rotation=180
-    picam.start_preview()
+    picam.start_recording(output, format='mjpeg')
     time.sleep(2)
     with picamera.array.PiRGBArray(picam) as stream_obj:
         picam.capture(stream_obj,format='bgr')
         camera = stream_obj.array
+        picam.stop_recording()
 
 classNames= []
 classFile = 'coco.names'
