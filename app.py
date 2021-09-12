@@ -38,7 +38,7 @@ def gen_frames():
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
-buffer=io.BytesIO
+#buffer=io.BytesIO
 with picamera.PiCamera() as picam:
     picam.rotation=180
     #picam.start_recording(buffer, format='mjpeg')
@@ -48,7 +48,6 @@ with picamera.PiCamera() as picam:
         picam.capture(stream_obj,format='bgr')
         camera = stream_obj.array
         print("here")
-        continue
 
 
 classNames= []
