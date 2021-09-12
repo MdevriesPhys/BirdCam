@@ -46,7 +46,7 @@ with picamera.PiCamera() as picam:
     time.sleep(2)
     with picamera.array.PiRGBArray(picam) as stream_obj:
         picam.capture(stream_obj,format='bgr')
-        #buffer = stream_obj.array
+        camera = stream_obj.array
         #picam.stop_recording()
 
 classNames= []
