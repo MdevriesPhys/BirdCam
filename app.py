@@ -2,14 +2,18 @@ import time
 
 from flask import Flask, render_template, Response
 import cv2
-import picamera
-import picamera.array
+import numpy as np
+#import picamera
+#import picamera.array
 
 def gen_frames():
     while True:
         global net, classNames
-
-        success, img = camera#camera.read()  #read in a camera frame
+        #-------FOR PC------------
+        #success, img = camera.read()  #read in a camera frame
+        #------FOR RPI------------
+        success=True
+        img=camera
         classIDs, confs, bboxes = net.detect(img, confThreshold=thres)
         if len(classIDs) > 0:  # did we detect anything?
             # loop to get out results, draw box around it, label it
@@ -66,4 +70,5 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == "__main__":
-    app.run(host="192.168.8.108", port=8000,debug=True)
+    #app.run(host="192.168.8.108", port=8000,debug=True)
+    app.run(debug=True)
