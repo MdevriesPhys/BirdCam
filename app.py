@@ -39,13 +39,13 @@ app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
 with picamera.PiCamera() as picam:
-    output = b""
     picam.rotation=180
-    picam.start_recording(output, format='mjpeg')
-    #time.sleep(2)
+    buffer=b""
+    picam.start_recording(buffer, format='mjpeg')
+    time.sleep(2)
     with picamera.array.PiRGBArray(picam) as stream_obj:
         picam.capture(stream_obj,format='bgr')
-        picam = stream_obj.array
+        buffer = stream_obj.array
         picam.stop_recording()
 
 classNames= []
