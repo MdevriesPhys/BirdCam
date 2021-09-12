@@ -12,6 +12,12 @@ def gen_frames():
             frame=buffer.tobytes()
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
+#init flask
+app =Flask(__name__)
+#init camera, for rpi use picamera command
+#camera = cv2.VideoCapture(0)
+camera = picamera.PiCamera(resolution='640x480', framerate=24)
+
 #define template route
 @app.route('/')
 def index():
@@ -22,13 +28,5 @@ def index():
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
-
-
-#init flask
-app =Flask(__name__)
-#init camera, for rpi use picamera command
-#camera = cv2.VideoCapture(0)
-camera = picamera.PiCamera(resolution='640x480', framerate=24)
 if __name__ == "__main__":
     app.run(debug=True)
