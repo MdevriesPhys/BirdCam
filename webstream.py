@@ -27,7 +27,7 @@ def index():
 
 def detect_bird():
     #grab global variables
-    global cam, outputFrame, lock
+    global cam, outputFrame, lock, net
 
     #init bird detection software
     bird=BirdID()
@@ -38,7 +38,7 @@ def detect_bird():
         timestamp=datetime.datetime.now()
         cv2.putText(frame,timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-        bird_seen = bird.detect(frame,bird)
+        bird_seen = bird.detect(frame)
         with lock:
             outputFrame=frame.copy()
 def generate():
