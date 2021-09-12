@@ -1,7 +1,9 @@
+import time
+
 from flask import Flask, render_template, Response
 import cv2
-from imutils.video import VideoStream
-from picamera import PiCamera
+import picamera
+import picamera.array
 
 def gen_frames():
     while True:
@@ -31,7 +33,12 @@ def gen_frames():
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
-camera = PiCamera()
+with picamera.PiCamera() as picam:
+    picam.start_preview()
+    time.sleep(2)
+    with picamera.array.PiRGBArray(picam) as stream_obj:
+        picam.capture(stream_obj,format='bgr')
+        camera = stream_obj.array
 
 classNames= []
 classFile = 'coco.names'
