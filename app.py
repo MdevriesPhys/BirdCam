@@ -47,7 +47,7 @@ with picamera.PiCamera() as picam:
     with picamera.array.PiRGBArray(picam) as stream_obj:
         picam.capture(stream_obj,format='bgr')
         camera = stream_obj.array
-        #picam.stop_recording()
+        picam.stop_capture()
 
 classNames= []
 classFile = 'coco.names'
