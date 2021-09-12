@@ -14,6 +14,14 @@ def gen_frames():
         #success, img = camera.read()  #read in a camera frame
         #------FOR RPI------------
         success=True
+        with picamera.PiCamera() as picam:
+            picam.rotation = 180
+            # picam.start_recording(buffer, format='mjpeg')
+            # picam.capture(buffer,format='jpeg')
+            time.sleep(2)
+            with picamera.array.PiRGBArray(picam) as stream_obj:
+                picam.capture(stream_obj, format='bgr')
+                camera = stream_obj.array
         img=camera
         classIDs, confs, bboxes = net.detect(img, confThreshold=thres)
         if len(classIDs) > 0:  # did we detect anything?
@@ -39,14 +47,7 @@ app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
 #buffer=io.BytesIO
-with picamera.PiCamera() as picam:
-    picam.rotation=180
-    #picam.start_recording(buffer, format='mjpeg')
-    #picam.capture(buffer,format='jpeg')
-    time.sleep(2)
-    with picamera.array.PiRGBArray(picam) as stream_obj:
-        picam.capture(stream_obj,format='bgr')
-        camera = stream_obj.array
+
         print("here")
 
 
