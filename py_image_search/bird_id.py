@@ -15,7 +15,7 @@ class BirdID:
         nms_threshold = 0.8 #lower value is more suppression
         # Read coco.names into the list, strip, clean etc
         classNames = []
-        classFile = '/py_image_search/coco.names'
+        classFile = 'coco.names'
         with open(classFile, 'rt') as f:
             classNames = f.read().rstrip('\n').split('\n')
 
