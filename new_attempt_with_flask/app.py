@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
-import picamera as picamera
+#import picamera as picamera
 
 def gen_frames():
     while True:
@@ -15,13 +15,13 @@ def gen_frames():
 #init flask
 app =Flask(__name__)
 #init camera, for rpi use picamera command
-#camera = cv2.VideoCapture(0)
-camera = picamera.PiCamera(resolution='640x480', framerate=24)
+camera = cv2.VideoCapture(0)
+#camera = picamera.PiCamera(resolution='640x480', framerate=24)
 
 #define template route
 @app.route('/')
 def index():
-    return render_template('page.html')
+    return render_template('index.html')
 
 #define route for video feed
 @app.route('/video_feed')
