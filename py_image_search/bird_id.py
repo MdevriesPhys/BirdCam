@@ -34,6 +34,7 @@ class BirdID:
         #While loop to send image/cam to model, get ClassID (from classNames), confidences, bounding box params (A,B,C,D)
         #while True:
         #success,img = cam.read()
+        global net
         classIDs, confs, boundingboxes = net.detect(img,confThreshold=confidenceThreshold)
         #print(classIDs,(confs))
 
