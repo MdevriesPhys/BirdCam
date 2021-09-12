@@ -9,7 +9,7 @@ def gen_frames():
     while True:
         global net, classNames
 
-        success, img = camera.read()  #read in a camera frame
+        success, img = camera#camera.read()  #read in a camera frame
         classIDs, confs, bboxes = net.detect(img, confThreshold=thres)
         if len(classIDs) > 0:  # did we detect anything?
             # loop to get out results, draw box around it, label it
@@ -33,12 +33,12 @@ def gen_frames():
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
-with picamera.PiCamera() as camera:
-    camera.start_preview()
+with picamera.PiCamera() as picam:
+    picam.start_preview()
     time.sleep(2)
-    #with picamera.array.PiRGBArray(picam) as stream_obj:
-    #    picam.capture(stream_obj,format='bgr')
-    #    camera = stream_obj.array
+    with picamera.array.PiRGBArray(picam) as stream_obj:
+        picam.capture(stream_obj,format='bgr')
+        camera = stream_obj.array
 
 classNames= []
 classFile = 'coco.names'
