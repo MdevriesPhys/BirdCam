@@ -37,7 +37,7 @@ def detect_bird():
         frame = imutils.resize(frame, width=400)
         timestamp=datetime.datetime.now()
         cv2.putText(frame,timestamp.strftime("%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1))
+			cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
         bird_seen = bird.detect(frame)
         with lock:
             outputFrame=frame.copy()

@@ -67,7 +67,7 @@ class BirdID:
                         cv2.putText(img,classNames[classID-1].upper(),(box[0]+10,box[1]+30),cv2.FONT_HERSHEY_COMPLEX,1,(0,255*colourConfidence,255*(1-colourConfidence)),thickness=2)
                         cv2.putText(img, str(round(confidence*100,1))+"%", (box[0] + 10, box[1] + 50), cv2.FONT_HERSHEY_COMPLEX, 1,
                         (0, 255 * colourConfidence, 255 * (1 - colourConfidence)), thickness=2)
-    return(img)
+        return(img)
 
 #cv2.imshow("output",img)
 #cv2.waitKey(10)
