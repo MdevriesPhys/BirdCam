@@ -33,12 +33,12 @@ def gen_frames():
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
-with picamera.PiCamera() as picam:
+with picamera.PiCamera() as camera:
     picam.start_preview()
     time.sleep(2)
-    with picamera.array.PiRGBArray(picam) as stream_obj:
-        picam.capture(stream_obj,format='bgr')
-        camera = stream_obj.array
+    #with picamera.array.PiRGBArray(picam) as stream_obj:
+    #    picam.capture(stream_obj,format='bgr')
+    #    camera = stream_obj.array
 
 classNames= []
 classFile = 'coco.names'
