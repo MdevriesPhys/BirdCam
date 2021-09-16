@@ -28,7 +28,8 @@ def gen_frames():
             # loop to get out results, draw box around it, label it
             for classID, confidence, box in zip(classIDs.flatten(), confs.flatten(), bboxes):
                 if classNames[classID-1] == 'bird':  # we only want to see birds
-                    colourConfidence = confidence  # (confidence - confidenceThreshold / confidence)  # use this to create a scale for colouring with confidence intervals?
+                    #colourConfidence = confidence  # (confidence - confidenceThreshold / confidence)  # use this to create a scale for colouring with confidence intervals?
+                    colourConfidence = 1 #bright green, no changing with confidence level
                     cv2.rectangle(img, box, color=(0, 255 * colourConfidence, 255 * (1 - colourConfidence)),thickness=2)
                     cv2.putText(img, classNames[classID-1].upper(), (box[0] + 10, box[1] + 30),cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255 * colourConfidence, 255 * (1 - colourConfidence)),thickness=2)
                     cv2.putText(img, str(round(confidence * 100, 0)) + "%", (box[0] + 10, box[1] + 50),cv2.FONT_HERSHEY_COMPLEX, 1,(0, 255 * colourConfidence, 255 * (1 - colourConfidence)), thickness=2)
@@ -42,7 +43,7 @@ def gen_frames():
             img=buffer.tobytes()
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')  # concat frame one by one and show result
 
-#init flask
+#start flask
 app =Flask(__name__)
 #init camera, for rpi use picamera command
 #camera = cv2.VideoCapture(0)
