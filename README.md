@@ -11,7 +11,7 @@ Current dev version: v1.2
 	- [ ] v1.1 Need to utilise NMS to cleanup identification __to test on RPi__
 	- [ ] v1.2 Quality of life for testing: identify if running with webcam (windows PC) or deployed on RPi __current__
 - [ ] v2 Sets flag (why not `bird_is_present`?) when a bird is present and take a picture, add timestamp
-- [ ] v3 Uses `bird_is_present==True` to send image (twitter?  or otherwise notify people who're interested (maybe a buzzer? A light goes on when bird is present?)
+- [ ] v3 Uses `bird_is_present==True` to send image (twitter bot?)  or otherwise notify people who're interested (maybe a buzzer? A light goes on when bird is present?)
 
 - - - -
 
