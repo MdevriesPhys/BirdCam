@@ -5,7 +5,7 @@ RPi-based computer vision to look at birds visiting a bird feeder.
 
 Current stable version: v1\
 Current test version: v1.1\
-Current dev version: v1.2\
+Current dev version: v1.2
 
 - [x] v1 Identifies when a bird visits the feeder, stream to local IP address
 	- [ ] v1.1 Need to utilise NMS to cleanup identification __to test on RPi__
