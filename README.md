@@ -1,9 +1,10 @@
 # BirdCam #
 RPi-based computer vision to look at birds visiting a bird feeder.
 ### Plans ###
-Current: v1
+Current stable version: v1
 
 * v1 Identifies when a bird visits the feeder, stream to local IP address :white_check_mark:
+	* v1.1 Need to utilise NMS to cleanup identification __current__
 * v2 Sets flag (why not `bird_is_present`?) when a bird is present and take a picture, add timestamp
 * v3 Uses `bird_is_present==True` to send image (twitter?  or otherwise notify people who're interested (maybe a buzzer? A light goes on when bird is present?)
 
