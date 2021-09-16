@@ -1,26 +1,28 @@
 import time
-
 from flask import Flask, render_template, Response
 import cv2
 import numpy as np
-import picamera
-import picamera.array
 import io
+import platform
 
 def gen_frames():
     while True:
-        global net, classNames
+        global net, classNames, camera
         #-------FOR WEBCAM------------
-        #success, img = camera.read()  #read in a camera frame
+        if test_mode==True:
+            success, img = camera.read()  #read in a camera frame
         #------FOR RPI------------
-        success=True
-        with picamera.PiCamera() as picam:
-            picam.rotation = 180   #rotation of camera image
-            time.sleep(0.1)
-            with picamera.array.PiRGBArray(picam) as stream_obj:
-                picam.capture(stream_obj, format='bgr')
-                camera = stream_obj.array
-        img=camera
+        else:
+            import picamera
+            import picamera.array
+            success=True
+            with picamera.PiCamera() as picam:
+                picam.rotation = 180   #rotation of camera image
+                time.sleep(0.1)
+                with picamera.array.PiRGBArray(picam) as stream_obj:
+                    picam.capture(stream_obj, format='bgr')
+                    camera = stream_obj.array
+            img=camera
         #------------------------------------------------
 
         classIDs, confs, bboxes = net.detect(img, confThreshold=thres)
@@ -34,7 +36,7 @@ def gen_frames():
         if len(indices)>0: #did we detect anything?
             for i in indices:#loop to get out results, draw box around it, label it
                 i = i[0]
-                if classNames[classIDs[i][0] - 1] == 'bird':  # we only want to see the looked for item
+                if classNames[classIDs[i][0] - 1] == target_item:  # we only want to see the looked for item
                     box = bboxes[i]
                     x, y, w, h = box[0], box[1], box[2], box[3]
                     confidence=confs[i]
@@ -54,14 +56,14 @@ def gen_frames():
             img=buffer.tobytes()
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + img + b'\r\n')  # concat frame one by one and show result
 
-#--------start flask------------
+#--------startups------------
 app =Flask(__name__)
-
-#-------init camera, (webcam only) comment out on RPi-------
-#camera = cv2.VideoCapture(0)
-
-
-
+test_mode = False #assume rpi deployment
+target_item = "bird" #looking for birds
+if platform.system()=="Windows":
+    test_mode=True  #this is a flag to decide between testing on windows or deployed on RPi
+    camera = cv2.VideoCapture(0)  #inits webcam camera, for testing
+    target_item = "cell phone" #debug using phone, easier to use
 
 classNames= []
 classFile = 'coco.names'
@@ -89,6 +91,7 @@ def index():
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-if __name__ == "__main__":
+if test_mode==True:
+    app.run(debug=True)
+else:
     app.run(host="192.168.8.108", port=8000,debug=True)
-    #app.run(debug=True)
