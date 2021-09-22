@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import io
 import platform
+import socket
 
 def gen_frames():
     while True:
@@ -78,7 +79,7 @@ net.setInputSize(320,320)
 net.setInputScale(1.0/ 127.5)
 net.setInputMean((127.5, 127.5, 127.5))
 net.setInputSwapRB(True)
-thres=0.45
+thres=0.25
 nms_threshold=0.2
 
 #define template route
@@ -94,4 +95,6 @@ def video_feed():
 if test_mode==True:
     app.run(debug=True)
 else:
-    app.run(host="192.168.8.108", port=8000,debug=True)
+    hostname=socket.gethostname()
+    local_ip=socket.gethostbyname(hostname)
+    app.run(host=str(local_ip), port=8000,debug=True)
